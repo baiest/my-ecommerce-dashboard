@@ -1,0 +1,12 @@
+.App {
+    text-align: center;
+    display: flex;
+}
+
+.main {
+    background: lightcoral;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

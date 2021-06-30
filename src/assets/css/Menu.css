@@ -1,0 +1,23 @@
+nav {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+nav h1 {
+    font-size: 100%;
+    margin: 0;
+    padding: 25px;
+}
+
+.menu {
+    background: lightblue;
+    height: 100%;
+    margin: 0;
+    padding: 10px;
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    text-align: left;
+}
