@@ -1,27 +1,35 @@
 .form__product {
     background: lightgreen;
     padding: 20px;
+    width: 450px;
     border-radius: 15px;
     box-shadow: -15px 10px 25px black;
     text-align: left;
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form__product-fields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 20px;
 }
 
 .form__product input {
-    height: 15px;
-    width: 25%;
     margin: 15px;
-    width: 200px;
-}
-
-.form__input {
-    display: flex;
-    margin: 15px
+    height: 15px;
+    width: 40%;
 }
 
 .form__input button {
-    margin-bottom: 5px;
-    width: 20px;
     border-radius: 0;
+}
+
+.form__input {
+    margin: 15px;
 }
 
 .form__input input {
@@ -29,9 +37,51 @@
     width: 100px;
 }
 
+.form__product-categories {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.form__categories {
+    background: lightcyan;
+    width: 225px;
+    height: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    overflow-y: scroll;
+}
+
+.form__category-name {
+    margin: 10px;
+    padding: 5px 15px;
+    border-radius: 25px;
+    background: lightblue;
+    cursor: pointer;
+}
+
+.form__category-input {
+    display: none;
+}
+
+.form__category-input:checked+.form__category-name {
+    background: lightseagreen;
+}
+
 .form__options {
     margin: 15px;
     text-align: right;
+}
+
+.form__categories-list {
+    background: lightslategray;
+    display: inline-block;
+    width: 150px;
+    height: 100px;
+    list-style: none;
+    padding: 0;
+    overflow-y: scroll;
 }
 
 .form__options button {
