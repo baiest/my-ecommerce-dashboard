@@ -1,13 +1,14 @@
 import React from 'react'
 import axios from 'axios'
 import '../../assets/css/FormProduct.css'
-import { API_PRODUCT_NEW, API_CATEGORIES }from '../../providers/api'
+import { API_PRODUCT_NEW, API_PRODUCT_IMAGE_NEW, API_CATEGORIES }from '../../providers/api'
 class FormProduct extends React.Component{
     constructor(props){
         super(props)
         this.state = {
             update: this.props.update || false,
             categories: [],
+            progress: 0,
             form: {
                 product_id: {
                     type: 'text',
@@ -29,13 +30,15 @@ class FormProduct extends React.Component{
                     value: 0,
                     placeholder: 'Price'
                 },
-                category_id: []
+                category_id: [],
+                photos: []
             }
         }
         this.source = axios.CancelToken.source();
 
         this.handleInput = this.handleInput.bind(this)
         this.addCategory = this.addCategory.bind(this)
+        this.addPhoto = this.addPhoto.bind(this)
         this.save = this.save.bind(this)
     }
 
@@ -44,7 +47,6 @@ class FormProduct extends React.Component{
             const response = await axios.get(API_CATEGORIES,  {
                 cancelToken: this.source.token
             })
-            console.log(response.data)
             this.setState({categories: response.data, loading: false})
 
         }catch(error){
@@ -71,7 +73,6 @@ class FormProduct extends React.Component{
         const { form } = this.state
         const { category_id } = form
         let index_category = category_id.findIndex(c => c.category_id === category.category_id)
-        console.log(index_category, )
         index_category > -1
         ? category_id.splice(index_category, 1)
         : category_id.push(category)
@@ -82,21 +83,60 @@ class FormProduct extends React.Component{
         }})
     }
 
+    addPhoto(photo){
+        this.setState({form: {
+            ...this.state.form,
+            photos: [...this.state.form.photos, photo.target.files[0]]
+        }})
+        console.log(this.state.form.photos)
+    }
+
+    
     async save(){
         const { form } = {...this.state}
         const form_keys = Object.keys(form)
         const form_normalize = {}
+        const files = new FormData()
+        
         form_keys.map(i => (
-            form_normalize[i] = form[i].value
+            form[i].value !== undefined
+            ? form_normalize[i] = form[i].value
+            : form_normalize[i] = form[i]
         ))
 
+        console.log(form_normalize)
+        files.append('photos', form.photos)
         //this.validate()
+        
+        const onUploadProgress = (event) => {
+            console.log("cargando", event)
+            this.setState({
+                progress: Math.round((100 * event.loaded) / event.total),
+            })
+        }
         try {
-            const response = await axios.post(
+            const response_form = await axios.post(
                 API_PRODUCT_NEW, 
                 form_normalize,
-                )
-            console.log(response)
+            )
+            console.log(response_form)
+            if (response_form.status === 200 && form.photos.length > 0){
+                form.photos.map(async p => {
+                    this.setState({progress : 0})
+                    let file = new FormData()
+                    file.append('photo', p)
+                    const response_photos = await axios.post(
+                        API_PRODUCT_IMAGE_NEW(form_normalize.product_id), 
+                        file,
+                        {
+                            onUploadProgress,
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            }
+                        })
+                    console.log(response_photos)
+                })
+            }
         } catch (error) {
             console.log(error.message)
         }
@@ -135,7 +175,13 @@ class FormProduct extends React.Component{
                         })
                     }
                 </div>
-                <input type="file" onChange={this.onFileChange} />
+                <input type="file" onChange={this.onFileChange} onChange={this.addPhoto}/>
+                <ul>
+                    {
+                        form.photos.map(p => <li key={p.name}>{p.name}</li>)
+                    }
+                </ul>
+                <progress  max="100" value={this.state.progress}>{this.state.progress}%</progress>
                 <div className="form__product-categories">
                     <div className="form__categories">
                         { this.state.categories.map(c => {
