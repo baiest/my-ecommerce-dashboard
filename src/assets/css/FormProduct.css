@@ -20,7 +20,6 @@
 
 .form__product input {
     margin: 15px;
-    height: 15px;
     width: 40%;
 }
 
@@ -35,6 +34,26 @@
 .form__input input {
     margin: 0;
     width: 100px;
+}
+
+.photo__dragdrop {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    background: limegreen;
+    margin: 15px;
+    border: 1px dashed black;
+}
+
+.list__preview-photo {
+    display: inline-block;
+    flex-wrap: wrap;
+}
+
+.preview-photo {
+    width: 50px;
+    margin-right: 15px;
+    margin-top: 15px;
 }
 
 .form__product-categories {

@@ -22,12 +22,12 @@ class FormProduct extends React.Component{
                 },
                 product_quantity:{
                     type: 'number',
-                    value: 0,
+                    value: '',
                     placeholder: 'Quantity'
                 },
                 product_price:{
                     type: 'number',
-                    value: 0,
+                    value: '',
                     placeholder: 'Price'
                 },
                 category_id: [],
@@ -39,6 +39,7 @@ class FormProduct extends React.Component{
         this.handleInput = this.handleInput.bind(this)
         this.addCategory = this.addCategory.bind(this)
         this.addPhoto = this.addPhoto.bind(this)
+        this.removePhoto = this.removePhoto.bind(this)
         this.save = this.save.bind(this)
     }
 
@@ -72,6 +73,7 @@ class FormProduct extends React.Component{
     addCategory(category){
         const { form } = this.state
         const { category_id } = form
+        
         let index_category = category_id.findIndex(c => c.category_id === category.category_id)
         index_category > -1
         ? category_id.splice(index_category, 1)
@@ -81,14 +83,25 @@ class FormProduct extends React.Component{
             ...form, 
             category_id: category_id.sort((a, b) => a.category_name > b.category_name? 1 : -1)
         }})
+        console.log(this.state.form.photos)
     }
 
     addPhoto(photo){
         this.setState({form: {
             ...this.state.form,
-            photos: [...this.state.form.photos, photo.target.files[0]]
+            photos: [...this.state.form.photos, photo]
         }})
-        console.log(this.state.form.photos)
+    }
+
+    removePhoto(key){
+        const arrayPhotos = this.state.form.photos
+        arrayPhotos.splice(key, 1)
+        console.log(arrayPhotos)
+        this.setState({form: {
+            ...this.state.form,
+            photos: arrayPhotos
+        }})
+        console.log(arrayPhotos)
     }
 
     
@@ -141,11 +154,29 @@ class FormProduct extends React.Component{
             console.log(error.message)
         }
     }
-
+    
     render(){
         const { form } = {...this.state}
         const form_keys = Object.keys(form)
         
+        const dragOver = (e) => {
+            e.preventDefault();
+        }
+        
+        const dragEnter = (e) => {
+            e.preventDefault();
+        }
+        
+        const dragLeave = (e) => {
+            e.preventDefault();
+        }
+        
+        const fileDrop = (e) => {
+            e.preventDefault();
+            const files = e.dataTransfer.files;
+            this.addPhoto(files[0])
+        }
+
         return(
             <form className='form__product'>
                 <div className="form__product-fields">
@@ -156,6 +187,7 @@ class FormProduct extends React.Component{
                             key={i} 
                             id={i} 
                             type="text"
+                            value={form[i].value}
                             placeholder={form[i].placeholder}
                             onChange={this.handleInput}/>)
                             
@@ -175,13 +207,21 @@ class FormProduct extends React.Component{
                         })
                     }
                 </div>
-                <input type="file" onChange={this.onFileChange} onChange={this.addPhoto}/>
-                <ul>
-                    {
-                        form.photos.map(p => <li key={p.name}>{p.name}</li>)
-                    }
-                </ul>
-                <progress  max="100" value={this.state.progress}>{this.state.progress}%</progress>
+                <div className="photo__dragdrop"
+                    onDragOver={dragOver}
+                    onDragEnter={dragEnter}
+                    onDragLeave={dragLeave}
+                    onDrop={fileDrop}>
+
+                    <input type="file" onChange={this.onFileChange} onChange={(e) => this.addPhoto(e.target.files[0])}/>
+                    <ul className="list__preview-photo">
+                        {
+                            form.photos.map((p, key) => <img key={key} className="preview-photo" onClick={() => this.removePhoto(key)} src={URL.createObjectURL(p) || ''} alt="photo" />)
+                        }
+                    </ul>
+                    <label htmlFor="progress">{this.state.progress}%</label>
+                    <progress id="progress"  max="100" value={this.state.progress}/>
+                </div>
                 <div className="form__product-categories">
                     <div className="form__categories">
                         { this.state.categories.map(c => {

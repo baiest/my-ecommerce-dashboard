@@ -1,4 +1,4 @@
-const API_URL = 'http://192.168.1.55:5000/api'
+const API_URL = 'http://192.168.1.53:5000/api'
 
 //PRODUCTS
 export const API_PRODUCTS = `${API_URL}/products`
