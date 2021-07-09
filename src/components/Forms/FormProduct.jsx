@@ -3,6 +3,7 @@ import axios from 'axios'
 import '../../assets/css/FormProduct.css'
 import { API_PRODUCT_NEW, API_PRODUCT_IMAGE_NEW, API_CATEGORIES }from '../../providers/api'
 import PhotoDrop from './PhotoDrop'
+import ListCategories from './ListCategories';
 class FormProduct extends React.Component{
     constructor(props){
         super(props)
@@ -192,27 +193,11 @@ class FormProduct extends React.Component{
                         })
                     }
                 </div>
-                <PhotoDrop photos={form.photos} addPhoto={this.addPhoto} removePhoto={this.removePhoto} />
-                <div className="form__product-categories">
-                    <div className="form__categories">
-                        { this.state.categories.map(c => {
-                            return(
-                                <div key={c.category_id}>
-                                    <input className="form__category-input" id={c.category_id} type="checkbox" onChange={() => this.addCategory(c)} />
-                                    <label className="form__category-name" htmlFor={c.category_id}>{c.category_name}</label>
-                                </div>
-                            )
-                        })}
-                    </div>
-                    <ul className="form__categories-list">
-                        {
-                            form.category_id.map(c => <li key={c.category_id}>{c.category_name}</li>)
-                        }
-                    </ul>
-                </div>
+                <PhotoDrop progress={this.state.progress} photos={form.photos} addPhoto={this.addPhoto} removePhoto={this.removePhoto} />
+                <ListCategories addCategory={this.addCategory} categories={form.category_id} categoriesSelected={this.state.categories}/>
                 <div className="form__options">
-                    <button type="button" onClick={this.save}>Guardar</button>
-                    <button type="button">Cancelar</button>
+                    <button className="btn-green" type="button" onClick={this.save}>Guardar</button>
+                    <button className="btn-red" type="button">Cancelar</button>
                 </div>
             </form>
         )

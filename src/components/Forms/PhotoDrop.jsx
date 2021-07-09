@@ -11,15 +11,6 @@ const PhotoDrop = (props) => {
         setBackground('#000')
     }
     
-    const dragEnter = (e) => {
-        e.preventDefault();
-    }
-    
-    const dragLeave = (e) => {
-        e.preventDefault();
-        setBackground('#fff')
-    }
-    
     const fileDrop = (e) => {
         e.preventDefault();
         setBackground('#fff')
@@ -30,8 +21,6 @@ const PhotoDrop = (props) => {
 
     return <div className="photo__dragdrop" style={{background: background}}
     onDragOver={dragOver}
-    onDragEnter={dragEnter}
-    onDragLeave={dragLeave}
     onDrop={fileDrop}>
 
         <input type="file" accept=".jpg,.jegp,.png,.web"
@@ -46,8 +35,8 @@ const PhotoDrop = (props) => {
                 })
             }
         </ul>
-        <label htmlFor="progress">5%</label>
-        <progress id="progress"  max="100" value={5}/>
+        <label htmlFor="progress">{props.progress}%</label>
+        <progress id="progress"  max="100" value={props.progress}/>
     </div>
 }
 

@@ -1,0 +1,10 @@
+.error {
+    background: lightcoral;
+    color: #fff;
+    width: 60%;
+    height: auto;
+    margin: 10px auto;
+    text-align: center;
+    padding: 20px;
+    box-shadow: -5px 10px 20px black;
+}
