@@ -1,26 +1,26 @@
 .form__product {
     background: lightgreen;
     padding: 20px;
-    width: 450px;
+    width: 800px;
     border-radius: 15px;
     box-shadow: -15px 10px 25px black;
     text-align: left;
     margin: 15px 0;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
 }
 
 .form__product-fields {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+    flex-direction: column;
     margin: 20px;
+    width: 40%;
 }
 
 .form__product input {
     margin: 15px;
-    width: 40%;
+    width: 100%;
 }
 
 .form__input button {
@@ -36,26 +36,6 @@
     width: 100px;
 }
 
-.photo__dragdrop {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    background: limegreen;
-    margin: 15px;
-    border: 1px dashed black;
-}
-
-.list__preview-photo {
-    display: inline-block;
-    flex-wrap: wrap;
-}
-
-.preview-photo {
-    width: 50px;
-    margin-right: 15px;
-    margin-top: 15px;
-}
-
 .form__product-categories {
     display: flex;
     justify-content: space-around;
@@ -69,7 +49,7 @@
     display: flex;
     flex-wrap: wrap;
     padding: 20px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .form__category-name {
@@ -100,7 +80,7 @@
     height: 100px;
     list-style: none;
     padding: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .form__options button {

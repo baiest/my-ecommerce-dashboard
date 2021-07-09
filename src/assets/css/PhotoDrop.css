@@ -1,0 +1,46 @@
+.photo__dragdrop {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 250px;
+    margin: 15px;
+    border: 1px dashed black;
+}
+
+.list__preview-photo {
+    display: flex;
+    flex-wrap: wrap;
+    height: 50%;
+    padding: 0 auto;
+    overflow-y: auto;
+}
+
+.preview-photo {
+    position: relative;
+    margin-right: 15px;
+    margin-top: 15px;
+    display: flex;
+    width: 80px;
+}
+
+.remove-photo {
+    position: absolute;
+    cursor: pointer;
+    text-align: center;
+    right: 0;
+    background: red;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.remove-photo:hover {
+    background: white;
+    color: #000;
+}
+
+.preview-photo img {
+    width: 80px;
+    height: max-content;
+}

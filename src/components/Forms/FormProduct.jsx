@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import '../../assets/css/FormProduct.css'
 import { API_PRODUCT_NEW, API_PRODUCT_IMAGE_NEW, API_CATEGORIES }from '../../providers/api'
+import PhotoDrop from './PhotoDrop'
 class FormProduct extends React.Component{
     constructor(props){
         super(props)
@@ -70,20 +71,21 @@ class FormProduct extends React.Component{
         this.setState(input)
     }
 
-    addCategory(category){
+    addCategory(category, key){
         const { form } = this.state
         const { category_id } = form
         
+        //Buscar si la categoria esta agregada
         let index_category = category_id.findIndex(c => c.category_id === category.category_id)
         index_category > -1
         ? category_id.splice(index_category, 1)
         : category_id.push(category)
-
+        
         this.setState({ form: {
             ...form, 
             category_id: category_id.sort((a, b) => a.category_name > b.category_name? 1 : -1)
         }})
-        console.log(this.state.form.photos)
+        console.log(this.state.form.category_id)
     }
 
     addPhoto(photo){
@@ -159,23 +161,6 @@ class FormProduct extends React.Component{
         const { form } = {...this.state}
         const form_keys = Object.keys(form)
         
-        const dragOver = (e) => {
-            e.preventDefault();
-        }
-        
-        const dragEnter = (e) => {
-            e.preventDefault();
-        }
-        
-        const dragLeave = (e) => {
-            e.preventDefault();
-        }
-        
-        const fileDrop = (e) => {
-            e.preventDefault();
-            const files = e.dataTransfer.files;
-            this.addPhoto(files[0])
-        }
 
         return(
             <form className='form__product'>
@@ -207,21 +192,7 @@ class FormProduct extends React.Component{
                         })
                     }
                 </div>
-                <div className="photo__dragdrop"
-                    onDragOver={dragOver}
-                    onDragEnter={dragEnter}
-                    onDragLeave={dragLeave}
-                    onDrop={fileDrop}>
-
-                    <input type="file" onChange={this.onFileChange} onChange={(e) => this.addPhoto(e.target.files[0])}/>
-                    <ul className="list__preview-photo">
-                        {
-                            form.photos.map((p, key) => <img key={key} className="preview-photo" onClick={() => this.removePhoto(key)} src={URL.createObjectURL(p) || ''} alt="photo" />)
-                        }
-                    </ul>
-                    <label htmlFor="progress">{this.state.progress}%</label>
-                    <progress id="progress"  max="100" value={this.state.progress}/>
-                </div>
+                <PhotoDrop photos={form.photos} addPhoto={this.addPhoto} removePhoto={this.removePhoto} />
                 <div className="form__product-categories">
                     <div className="form__categories">
                         { this.state.categories.map(c => {
