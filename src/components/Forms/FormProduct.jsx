@@ -9,7 +9,9 @@ import {
     API_PRODUCT_IMAGE_NEW, 
     API_CATEGORIES,
     API_PRODUCT_ID,
-    API_CATEGORIES_PRODUCT } from '../../providers/api'
+    API_CATEGORIES_PRODUCT,
+    API_PRODUCT_UPDATE,
+    API_PRODUCT_IMAGE_UPDATE } from '../../providers/api'
 class FormProduct extends React.Component{
     constructor(props){
         super(props)
@@ -50,6 +52,7 @@ class FormProduct extends React.Component{
         this.addPhoto = this.addPhoto.bind(this)
         this.removePhoto = this.removePhoto.bind(this)
         this.save = this.save.bind(this)
+        this.update = this.update.bind(this)
     }
 
     async componentDidMount(){
@@ -127,10 +130,10 @@ class FormProduct extends React.Component{
             ...form, 
             category_id: category_id.sort((a, b) => a.category_name > b.category_name? 1 : -1)
         }})
-        console.log(this.state.form.category_id)
     }
 
     addPhoto(photo){
+        console.log(this.state.form.photos)
         this.setState({form: {
             ...this.state.form,
             photos: [...this.state.form.photos, photo]
@@ -145,7 +148,6 @@ class FormProduct extends React.Component{
             ...this.state.form,
             photos: arrayPhotos
         }})
-        console.log(arrayPhotos)
     }
 
     
@@ -171,6 +173,8 @@ class FormProduct extends React.Component{
                 progress: Math.round((100 * event.loaded) / event.total),
             })
         }
+
+        //Enviar a API
         try {
             const response_form = await axios.post(
                 API_PRODUCT_NEW, 
@@ -181,18 +185,51 @@ class FormProduct extends React.Component{
                     this.setState({progress : 0})
                     let file = new FormData()
                     file.append('photo', p)
-                    const response_photos = await axios.post(
-                        API_PRODUCT_IMAGE_NEW(form_normalize.product_id), 
-                        file,
-                        {
-                            onUploadProgress,
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            }
-                        })
-                    console.log(response_photos)
+                    try {
+                        await axios.post(
+                            API_PRODUCT_IMAGE_NEW(form_normalize.product_id), 
+                            file,
+                            {
+                                onUploadProgress,
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                }
+                            })
+                    } catch (error) {
+                        if(!axios.isCancel(error) && error.code !== 'ECONNABORTED'){
+                            this.setState({error: error.response?.data.error || error.message, loading: false})
+                        }
+                    }
                 })
             }
+        } catch(error){
+            
+            if(!axios.isCancel(error) && error.code !== 'ECONNABORTED'){
+                this.setState({error: error.response?.data.error || error.message, loading: false})
+            }
+        }
+    }
+
+    async update(){
+        const { form } = {...this.state}
+        const form_keys = Object.keys(form)
+        const form_normalize = {}
+        
+        this.setState({error: ''})
+        
+        form_keys.map(i => (
+            form[i].value !== undefined
+            ? form_normalize[i] = form[i].value
+            : form_normalize[i] = form[i]
+        ))
+        
+        try {
+            const response_form = await axios.put(
+                API_PRODUCT_UPDATE(form_normalize.product_id), 
+                form_normalize,
+            )
+            //Hay que pensar que hacer con las imagenes
+            console.log(response_form)
         } catch(error){
             
             if(!axios.isCancel(error) && error.code !== 'ECONNABORTED'){
@@ -258,7 +295,7 @@ class FormProduct extends React.Component{
                 <div className="form__options">
                     {
                         this.props.product_id 
-                        ? <button className="btn-green" type="button" onClick={this.save}>Actualizar</button>
+                        ? <button className="btn-green" type="button" onClick={this.update}>Actualizar</button>
                         : <button className="btn-green" type="button" onClick={this.save}>Guardar</button>
                     }
                     <button className="btn-red" type="button">Cancelar</button>

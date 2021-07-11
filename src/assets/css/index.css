@@ -60,3 +60,9 @@ body {
         transform: rotate(360deg);
     }
 }
+
+a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+}
