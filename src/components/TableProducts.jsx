@@ -2,12 +2,13 @@ import React from 'react'
 import '../assets/css/TableProducts.css'
 import axios from 'axios'
 import { API_PRODUCTS } from '../providers/api'
+import { Link } from 'react-router-dom'
 import Error from './general/Error'
 class TableProducts extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            titles: ['Serial', 'Name', 'Quantity', 'Price'],
+            titles: ['Serial', 'Name', 'Quantity', 'Price', 'Options'],
             products: [],
             error: '',
             loading: true
@@ -21,7 +22,7 @@ class TableProducts extends React.Component{
             const response = await axios.get(API_PRODUCTS,  {
                 cancelToken: this.source.token
             })
-            this.setState({products: response.data})
+            this.setState({products: response.data, loading: false})
         }catch(error){
             if(!axios.isCancel(error) && error.code !== 'ECONNABORTED'){
                 this.setState({error: error.response?.data.error || error.message, loading: false})
@@ -45,6 +46,11 @@ class TableProducts extends React.Component{
                             <td>{p.product_name}</td>
                             <td>{p.product_quantity}</td>
                             <td>{p.product_price}</td>
+                            <td>
+                                <Link to={`/products/update/${p.product_id}`} params={{ id: p.product_id}}>Editar</Link>
+                                <Link>Borrar</Link>
+                                <Link>Ver</Link>
+                            </td>
                         </tr>
                     })
                 }

@@ -3,17 +3,18 @@
     top: 25px;
     right: 25px;
     width: 250px;
+    z-index: 1;
 }
 
 .form__toast-in .error {
     width: unset;
-    animation: toast-in 1s linear;
+    animation: toast-in .5s linear;
     box-shadow: none;
 }
 
 .form__toast-out {
-    animation: toast-out 1s linear;
-    opacity: 0;
+    /*animation: toast-out 3s ease-out;*/
+    display: none;
 }
 
 @keyframes toast-in {
@@ -77,7 +78,7 @@
     border-radius: 15px;
     box-shadow: -15px 10px 25px black;
     text-align: left;
-    margin: 15px 0;
+    margin: 15px auto;
     display: flex;
     flex-wrap: wrap;
     align-items: center;

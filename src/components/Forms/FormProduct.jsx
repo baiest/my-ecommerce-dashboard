@@ -75,12 +75,13 @@ class FormProduct extends React.Component{
                 {
                     cancelToken: this.source.token
                 })
-                console.log(this.state)
-                const data_category = product_has_category.data.categories
+                //Without category
+                const data_category = product_has_category.data.categories || []
                 data_category.map(category_id => {
                     console.log(category_id)
                     const index_category = this.state.categories.findIndex(c => c.category_id === category_id)
-                })    
+                    this.addCategory(this.state.categories[index_category])
+                })
 
                 this.setState({form: {
                     ...form_data, 
