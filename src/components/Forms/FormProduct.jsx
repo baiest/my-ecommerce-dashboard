@@ -1,15 +1,15 @@
 import React from 'react'
 import axios from 'axios'
 import '../../assets/css/FormProduct.css'
+import Error from '../general/Error'
+import PhotoDrop from './PhotoDrop'
+import ListCategories from './ListCategories';
 import { 
     API_PRODUCT_NEW, 
     API_PRODUCT_IMAGE_NEW, 
     API_CATEGORIES,
     API_PRODUCT_ID,
     API_CATEGORIES_PRODUCT } from '../../providers/api'
-import Error from '../general/Error'
-import PhotoDrop from './PhotoDrop'
-import ListCategories from './ListCategories';
 class FormProduct extends React.Component{
     constructor(props){
         super(props)

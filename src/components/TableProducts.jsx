@@ -2,11 +2,15 @@ import React from 'react'
 import '../assets/css/TableProducts.css'
 import axios from 'axios'
 import { API_PRODUCTS } from '../providers/api'
+import Error from './general/Error'
 class TableProducts extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            products: []
+            titles: ['Serial', 'Name', 'Quantity', 'Price'],
+            products: [],
+            error: '',
+            loading: true
         }
 
         this.source = axios.CancelToken.source();
@@ -26,36 +30,16 @@ class TableProducts extends React.Component{
     }
 
     render(){
-        return <table className="table__products">
+        return <React.Fragment>
+        <table className="table__products">
             <thead>
-                <th>Serial</th>
-                <th>Nombre</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
+                {
+                    this.state.titles.map(t => <th>{t}</th>)
+                }
             </thead>
             <tbody>
-                {
-                    this.state.products.map(p => {
-                    return <tr key={p.product_id}>
-                            <td>{p.product_id}</td>
-                            <td>{p.product_name}</td>
-                            <td>{p.product_quantity}</td>
-                            <td>{p.product_price}</td>
-                        </tr>
-                    })
-                }
-                {
-                    this.state.products.map(p => {
-                    return <tr key={p.product_id}>
-                            <td>{p.product_id}</td>
-                            <td>{p.product_name}</td>
-                            <td>{p.product_quantity}</td>
-                            <td>{p.product_price}</td>
-                        </tr>
-                    })
-                }
-                {
-                    this.state.products.map(p => {
+            {   
+                this.state.products.map(p => {
                     return <tr key={p.product_id}>
                             <td>{p.product_id}</td>
                             <td>{p.product_name}</td>
@@ -66,6 +50,9 @@ class TableProducts extends React.Component{
                 }
             </tbody>
         </table>
+        {this.state.loading && <div className="loader"></div> }
+        {this.state.error && <Error message={this.state.error}/>}
+        </React.Fragment>
     }
 }
 
