@@ -1,3 +1,75 @@
+.form__toast {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    width: 250px;
+}
+
+.form__toast-in .error {
+    width: unset;
+    animation: toast-in 1s linear;
+    box-shadow: none;
+}
+
+.form__toast-out {
+    animation: toast-out 1s linear;
+    opacity: 0;
+}
+
+@keyframes toast-in {
+    0% {
+        transform: translateX(200px);
+        opacity: 0.5;
+    }
+    30%,
+    60%,
+    80% {
+        box-shadow: -5px 10px 20px black;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes toast-out {
+    0% {
+        transform: translateX(0);
+        opacity: 0.5;
+    }
+    30%,
+    60%,
+    80% {
+        transform: translateX(400px);
+    }
+    100% {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+.remove-toast {
+    position: absolute;
+    border: 2px solid #000;
+    cursor: pointer;
+    right: -15px;
+    top: -5px;
+    background: #fff;
+    color: #000;
+    font-weight: bold;
+    padding: 5px;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.remove-toast:hover {
+    background: lightcoral;
+    color: #fff;
+}
+
 .form__product {
     background: lightgoldenrodyellow;
     padding: 20px;

@@ -7,7 +7,7 @@ const Menu = () => {
         <h1>Nombre Ecommerce</h1>
         <ul className="menu">
             <li><Link>Perfil</Link></li>
-            <li><Link>Productos</Link></li>
+            <li><Link to="/products">Productos</Link></li>
             <li><Link>Ventas</Link></li>
             <li><Link>Envios</Link></li>
             <li><Link>Clientes</Link></li>
